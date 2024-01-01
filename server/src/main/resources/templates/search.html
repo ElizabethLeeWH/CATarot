@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body class = "bg-dark font-serif">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container px-lg-5">
+            <a class="navbar-brand fw-semibold fs-1" href="/">Tarot Paws</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- <a class="nav-link" href="#!">Contact</a> -->
+                        <form action="/search" method="GET">
+                            <input type="text" name="name" placeholder="Enter card name">
+                            <button type="submit">Search</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div  class="text-white">
+        <p class="text-center display-5 fw-normal">Search Results</p>
+        <div th:if="${not #lists.isEmpty(searchResults)}">
+            <p class="text-center fs-4 fw-light">Number of Search Hits: <span th:text="${searchResults.size}"></span></p>
+            <div th:each="tarotCard : ${searchResults}">
+                <!-- Display each Tarot card -->
+                <div class="accordion" id="myAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header rounded-pill" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <span data-th-text="${tarotCard.name}">
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#myAccordion">
+                            <div class="accordion-body row gx-lg-1">
+                                <!-- <div class="container"> -->
+                                    <div class="col-lg-6 col-xxl-2 mb-1 mt-1">
+                                        <div class="card bg-light border-0 h-100">
+                                            <img th:src="@{/cards/{img}(img=${tarotCard.img})}" alt="error">
+                                        </div>
+                                    </div>                    
+                                    <div class="col-lg-6 col-xxl-10 mb-1 mt-1">
+                                        <div class="card bg-light border-0 h-100">
+                                            <p><span data-th-text="${tarotCard.name}"></span></p>
+                                            <p><span data-th-text="${tarotCard.desc}"></span></p>
+                                        </div>
+                                    </div>                
+                                <!-- </div>   -->
+                            </div>
+                        </div>
+                    </div>  
+                </div>              
+                <!-- Add more details as needed -->
+            </div>
+        </div>
+    
+        <!-- Display a message if the searchResults list is empty -->
+        <p th:if="${#lists.isEmpty(searchResults)}">No matches found for your search.</p>
+    
+        
+    </div>
+
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body class = "bg-dark font-serif text-white">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container px-lg-5">
+            <a class="navbar-brand fw-semibold fs-1" href="/">Tarot Paws</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- <a class="nav-link" href="#!">Contact</a> -->
+                        <form action="/search" method="GET">
+                            <input type="text" name="name" placeholder="Enter card name">
+                            <button type="submit">Search</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-5">
+        <div class="container px-lg-1 text-center">
+            <h1 class="display-6 fw-semibold">Meow-ment of truth, your three-card tarot spread is ready!</h1>
+            <div class="p-1 p-lg-0 bg-dark">
+                <img class="img-fluid" th:src="@{/readingbg.png}" alt="image of cats">         
+            </div>
+        </div>        
+    </header>
+
+    <div>
+        <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" data-th-each="tarotCard, iterStat : ${tarotCards}">
+                <div class="carousel-item active" th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                    <div class="container px-lg-5">
+                        <div class="p-4 p-lg-5 bg-dark text-left">
+                            <div class="row gx-lg-3">
+                                <div class="col-lg-6 col-xxl-2 mb-1 mt-1">
+                                    <div class="card bg-dark border-0 h-100">
+                                        <img th:src="@{/cards/{img}(img=${tarotCard.img})}" alt="error" class="w-20">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xxl-10 mb-2 mt-1">
+                                    <div class="card bg-dark border-0 h-100">
+                                        <p><span data-th-text="${tarotCard.name}"></span></p>
+                                        <p><span data-th-text="${tarotCard.desc}"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+           
+        <!-- <div class="container">
+            <div data-th-each="tarotCard : ${tarotCards}">
+                <div>
+                    <img th:src="@{/cards/{img}(img=${tarotCard.img})}" alt="error">
+                </div>
+                <p><span data-th-text="${tarotCard.name}"></span></p>
+                <p><span data-th-text="${tarotCard.desc}"></span></p>
+            </div>
+        </div> -->
+    </div>
+
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

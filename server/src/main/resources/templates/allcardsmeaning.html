@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Homepage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+</head>
+
+<body class="bg-dark font-serif text-white">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container px-lg-5">
+            <a class="navbar-brand fw-semibold fs-1" href="/">Tarot Paws</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- <a class="nav-link" href="#!">Contact</a> -->
+                        <form th:action="@{/search}" method="GET">
+                            <input type="text" name="name" placeholder="Enter card name">
+                            <button type="submit">Search</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <div class="grid border-0 px-lg-5">
+            <div class="p-4 p-lg-5 bg-dark text-center">
+                <div class="row gx-lg-1">
+                    <div class="col-lg-6 col-xxl-12 mb-1 mt-1">
+                        <div class="card bg-dark border-0 h-100">
+                            <div class="m-5 m-lg-4 text-white">
+                                <h1 class="display-5 fw-normal">Deck-iphering Tarot Cards</h1>
+                                <p class="fs-4 fw-light">All Tarot Card Meanings Unveiled</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="text-center bg-dark mt-0 mb-3 p-2">
+        <a href="#cups" class="btn btn-primary">cups</a>
+        <a href="#major" class="btn btn-primary">major arcana</a>
+        <a href="#pentacles" class="btn btn-primary">pentacles</a>
+        <a href="#swords" class="btn btn-primary">swords</a>
+        <a href="#wands" class="btn btn-primary">wands</a>
+    </div>
+
+    <div id="major">
+        <div class="grid card bg-primary text-center mb-4 rounded-0">
+            <h1 class="fw-bold fs-2">Major Arcana</h1>
+            <h2 class="fw-semibold fst-italic fs-4">The Fool's Journey</h2>
+            <p>In the whiskered world of the Major Arcana, we prowl through a 22-card set that forms the heart and soul
+                of the tarot deck. Each card purrs with deep, archetypal significance, most notably within this feline
+                ensemble. These cards weave a tale of mystical journeys, from the curious pawsteps of The Foolish Kitty
+                to the majestic realm of The Grand Cat of the World. As we tread softly on the path of The Fool's paws,
+                we find ourselves mirroring our own nine lives in these cards, each one a purr-fect lesson in life and a
+                morsel for meditative clawing. They're not just the cat's whiskers of the tarot, but its very backbone.
+                In some readings, these Major Arcana cards stand alone, much like a solitary cat contemplating the
+                mysteries of the universe, offering a full spectrum of spiritual catnip for enlightenment and
+                individu-meow-tion.</p>
+        </div>
+        <div th:each="tarotCard, iterStat : ${allTarotCards}" th:if="${tarotCard.arcana.contains('major')}">
+            <div class="container-md bg-light rounded-3" th:id="'cups' + ${iterStat.index}">
+                <p><span th:text="${tarotCard.name}"></span></p>
+                <p>Description: <span th:text="${tarotCard.desc}"></span></p>
+                <p>Upright: <span th:text="${tarotCard.meaningUp}"></span></p>
+                <p>Reversed: <span th:text="${tarotCard.meaningRev}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="cups">
+        <div class="grid card bg-primary text-center mb-4 rounded-0">
+            <h1 class="fw-bold fs-2">Suit of Cups</h1>
+            <h2 class="fw-semibold fst-italic fs-4">emotion, feelings, intuition, relationships</h2>
+            <p>The Suit of Cups is where emotions purr and feelings flow like a gentle stream. These cards are the cat's
+                meow when it comes to matters of the heart, relationships, and emotional connections. Just like a cat
+                lapping up its milk, this suit invites us to drink deeply from the cup of our feelings, exploring the
+                depths of love, joy, and even the occasional hiss of sorrow. Reflecting the fluidity of water, each card
+                in this suit resonates with our intuitive and empathetic sides, making it a purr-fect mirror for our
+                emotional world.</p>
+        </div>
+        <div th:each="tarotCard, iterStat : ${allTarotCards}" th:if="${tarotCard.suit.contains('cups')}">
+            <div class="container-md bg-light rounded-3" th:id="'cups' + ${iterStat.index}">
+                <p><span th:text="${tarotCard.name}"></span></p>
+                <p>Description: <span th:text="${tarotCard.desc}"></span></p>
+                <p>Upright: <span th:text="${tarotCard.meaningUp}"></span></p>
+                <p>Reversed: <span th:text="${tarotCard.meaningRev}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="pentacles">
+        <div class="grid card bg-primary text-center mb-4 rounded-0">
+            <h1>Suit of Pentacles</h1>
+            <h2 class="fw-semibold fst-italic fs-4">nature, body, material world, stability</h2>
+            <p>In the Suit of Pentacles, we pounce into the realm of material aspects of life - wealth, resources, and
+                physical well-being. It's the kitty litter of the tarot world where we dig into our earthly pursuits.
+                Like a cat with its prized catch, this suit deals with the tangible achievements and practical aspects
+                of life. From the stability of the Four of Pentacles to the generosity of the Six of Pentacles, these
+                cards remind us to keep our paws grounded and to be mindful of the physical and financial aspects of our
+                lives.</p>
+        </div>
+        <div th:each="tarotCard, iterStat : ${allTarotCards}" th:if="${tarotCard.suit.contains('pentacles')}">
+            <div class="container-md bg-light rounded-3" th:id="'cups' + ${iterStat.index}">
+                <p><span th:text="${tarotCard.name}"></span></p>
+                <p>Description: <span th:text="${tarotCard.desc}"></span></p>
+                <p>Upright: <span th:text="${tarotCard.meaningUp}"></span></p>
+                <p>Reversed: <span th:text="${tarotCard.meaningRev}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="swords">
+        <div class="grid card bg-primary text-center mb-4 rounded-0">
+            <h1>Suit of Swords</h1>
+            <h2 class="fw-semibold fst-italic fs-4">logic, ideas, intellect, communication</h2>
+            <p>The Suit of Swords is the sharp-clawed aspect of the tarot, dealing with intellect, communication, and
+                challenges. Like a cat on the prowl, it requires us to be alert and agile in our thoughts and words.
+                This suit can often bring a scratch or two, symbolizing conflicts or mental struggles. It's where
+                thoughts and words can be as swift and cutting as a cat's claw, urging us to face our problems with the
+                precision and decisiveness of a cat stalking its prey.</p>
+        </div>
+        <div th:each="tarotCard, iterStat : ${allTarotCards}" th:if="${tarotCard.suit.contains('swords')}">
+            <div class="container-md bg-light rounded-3" th:id="'cups' + ${iterStat.index}">
+                <p><span th:text="${tarotCard.name}"></span></p>
+                <p>Description: <span th:text="${tarotCard.desc}"></span></p>
+                <p>Upright: <span th:text="${tarotCard.meaningUp}"></span></p>
+                <p>Reversed: <span th:text="${tarotCard.meaningRev}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="wands">
+        <div class="grid card bg-primary text-center mb-4 rounded-0">
+            <h1>Suit of Wands</h1>
+            <h2 class="fw-semibold fst-italic fs-4">energy, drive, willpower, creativity, power</h2>
+            <p>The Suit of Wands is where the fiery energy and creative spirit purr loudly, igniting the spark of
+                inspiration. Like a playful kitten chasing a wand toy, this suit encourages us to leap with passion and
+                enthusiasm towards our goals. It's about ambition, growth, and action. Whether it's the budding
+                potential of the Ace of Wands or the triumph of the Six of Wands, these cards inspire us to follow our
+                dreams with the curiosity and bravery of a cat exploring new territories.</p>
+        </div>
+        <div th:each="tarotCard, iterStat : ${allTarotCards}" th:if="${tarotCard.suit.contains('wands')}">
+            <div class="container-md bg-light rounded-3" th:id="'cups' + ${iterStat.index}">
+                <p><span th:text="${tarotCard.name}"></span></p>
+                <p>Description: <span th:text="${tarotCard.desc}"></span></p>
+                <p>Upright: <span th:text="${tarotCard.meaningUp}"></span></p>
+                <p>Reversed: <span th:text="${tarotCard.meaningRev}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
+        </div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
