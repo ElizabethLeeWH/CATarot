@@ -16,8 +16,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="login">Login</a>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <!-- <a class="nav-link" href="login">Login</a> -->
+                        <button class="nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <button class="nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#signoutModal">Sign out</button>
                     </li>
                     <li class="nav-item">
                         <!-- <a class="nav-link" href="#!">Contact</a> -->
@@ -31,6 +35,63 @@
         </div>
     </nav>
 
+    <div th:if="${alert}" class="alert alert-warning text-center" role="alert">
+        <span th:text="${alert}"></span>
+    </div>
+
+    <div class="modal fade text-black" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/login}" th:object="${user}" method="POST">
+                        <div data-th-if="${#fields.hasGlobalErrors()}">
+                            <p data-th-each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="col-form-label">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" th:field="*{username}">
+                            <label data-th-if="${#fields.hasErrors('username')}" data-th-errors="*{username}"></label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}">
+                            <label data-th-if="${#fields.hasErrors('password')}" data-th-errors="*{password}">Wrong password</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade text-black" id="signoutModal" tabindex="-1" aria-labelledby="signoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signoutModalLabel">Sign out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/signout}" method="POST">
+                        <div>Are you sure?</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Yes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header class="py-5">
         <div class="container px-lg-5">
             <div class="p-4 p-lg-5 bg-dark text-left">
@@ -43,6 +104,7 @@
                     <div class="col-lg-6 col-xxl-10 mb-1 mt-1">
                         <div class="card bg-dark border-0 h-100">
                             <div class="m-5 m-lg-4 text-white">
+                                <h2 th:if="${session.user != null}">Welcome, <span th:text="${user.username}">User</span>!</h2>
                                 <h1 class="display-5 fw-normal">Let Us Whisker You Into Your Fortune</h1>
                                 <p class="fs-4 fw-light">Purrceptive feline-guided tarot readings that unravel mystical paths with a meow of insight</p>
                             </div>

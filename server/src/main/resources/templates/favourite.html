@@ -8,20 +8,72 @@
     <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-    <h2>Favourite a Tarot Card</h2>
-    <form th:action="@{/favourite}" th:object="${favouriteCards}" method="POST">
-        <div>
-            <label for="userName">Username:</label>
-            <input type="text" id="userName" name="userName" th:field="*{userName}" />
-            <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></span>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container px-lg-5">
+            <a class="navbar-brand fw-semibold fs-1" href="/">Tarot Paws</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                    <li class="nav-item">
+                        <button class="nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#signoutModal">Sign out</button>
+                    </li>
+                    <li class="nav-item">
+                        <!-- <a class="nav-link" href="#!">Contact</a> -->
+                        <form th:action="@{/search}" method="GET">
+                            <input type="text" name="name" placeholder="Enter card name">
+                            <button type="submit">Search</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div>
+    </nav>
+
+    <div class="modal fade text-black" id="signoutModal" tabindex="-1" aria-labelledby="signoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signoutModalLabel">Sign out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/signout}" method="POST">
+                        <div>Are you sure?</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Yes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-center">Favourite a Tarot Card</h2>
+    <form th:action="@{/favourite}" th:object="${favouriteCard}" method="POST">
+        <input type="hidden" name="username" th:value="${username}" />
+        <label for="cardSelect">Select a Card:</label>
+        <select id="cardSelect" name="cardName">
+            <option th:each="card : ${cards}" th:value="${card.name}" th:text="${card.name}">Card Name</option>
+        </select>
+        <button type="submit">Favourite</button>
+        
+
+        <!-- <div>
             <label for="cardName">Card Name:</label>
-            <input type="text" id="cardName" name="cardName" />
-            <!-- Assuming cardName is a simple text input; modify as needed -->
+            <input type="text" id="cardName" name="cardName" th:field="*{cardName}"/>
         </div>
         <div>
-            <button type="submit">Add to Favorites</button>
+            <button type="submit">Add to Favourites</button>
+        </div> -->
+        <div>
+            <p class="text-center fs-4 fw-light">
+                Your favourited cards: <span th:if="${favouriteCard != null}" th:text="${favouriteCard.cardName}"></span>
+            </p>
+            <table>
+                <tr></tr>
+            </table>            
         </div>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

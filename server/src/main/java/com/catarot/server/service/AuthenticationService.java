@@ -28,9 +28,11 @@ public class AuthenticationService {
         //     throw new Exception(authMessage);
         // }
 
-        if(username == "chuk" && password == "123456"){
+        if("chuk".equals(username) && "qwerty".equals(password)){
+            System.out.println("true");
             return true;
         } else {
+            System.out.println("false");
             return false;
         }
     }

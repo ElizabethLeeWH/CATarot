@@ -22,16 +22,16 @@ public class RedisRepo {
         return (List<Tarot>) template.opsForValue().get(key);
     }
 
-    public void addFavouriteCard(String userName, Tarot card) {
-        List<Tarot> favourites = getFavouriteCards(userName);
+    public void addFavouriteCard(String username, Tarot card) {
+        List<Tarot> favourites = getFavouriteCards(username);
         if (favourites == null) {
             favourites = new ArrayList<>();
         }
         favourites.add(card);
-        template.opsForValue().set("favourites:" + userName, favourites);
+        template.opsForValue().set("favourites:" + username, favourites);
     }
 
-    public List<Tarot> getFavouriteCards(String userId) {
-        return (List<Tarot>) template.opsForValue().get("favorites:" + userId);
+    public List<Tarot> getFavouriteCards(String username) {
+        return (List<Tarot>) template.opsForValue().get("favorites:" + username);
     }
 }

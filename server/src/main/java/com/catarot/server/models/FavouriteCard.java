@@ -11,9 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FavouriteCards {
+public class FavouriteCard {
     @NotEmpty(message = "Username is required")
-    private String userName;
+    private String username;
 
-    private Tarot card;
+    @NotEmpty(message = "Card name is required")
+    private String cardName;
 }

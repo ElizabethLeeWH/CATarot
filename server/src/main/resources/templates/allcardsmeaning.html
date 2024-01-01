@@ -14,14 +14,16 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-lg-5">
             <a class="navbar-brand fw-semibold fs-1" href="/">Tarot Paws</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="login">Login</a>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <!-- <a class="nav-link" href="login">Login</a> -->
+                        <button class="nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <button class="nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#signoutModal">Sign out</button>
                     </li>
                     <li class="nav-item">
                         <!-- <a class="nav-link" href="#!">Contact</a> -->
@@ -34,6 +36,59 @@
             </div>
         </div>
     </nav>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/login}" th:object="${user}" method="POST">
+                        <div data-th-if="${#fields.hasGlobalErrors()}">
+                            <p data-th-each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="col-form-label">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" th:field="*{username}">
+                            <label data-th-if="${#fields.hasErrors('username')}" data-th-errors="*{username}"></label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}">
+                            <label data-th-if="${#fields.hasErrors('password')}" data-th-errors="*{password}">Wrong password</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="signoutModal" tabindex="-1" aria-labelledby="signoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signoutModalLabel">Sign out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/signout}" method="POST">
+                        <div>Are you sure?</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Yes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <header>
         <div class="grid border-0 px-lg-5">

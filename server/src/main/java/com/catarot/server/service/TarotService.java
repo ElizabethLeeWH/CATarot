@@ -83,7 +83,7 @@ public class TarotService {
         List<Tarot> searchResult = allCards.stream()
             .filter(card -> card.getName().replace("\"", "").toLowerCase().contains(name.toLowerCase().trim()))
             .collect(Collectors.toList());
-        System.out.println("Searching for: " + name + ", found: " + searchResult.size() + " results" + searchResult);
+        // System.out.println("Searching for: " + name + ", found: " + searchResult.size() + " results" + searchResult);
         return searchResult;
     }
 
