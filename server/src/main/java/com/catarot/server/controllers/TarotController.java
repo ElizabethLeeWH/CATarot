@@ -62,10 +62,8 @@ public class TarotController {
             user = new User();
         }
         mav.addObject("user", user);
-        // sess.removeAttribute("searchResults");
         List<Tarot> searchResults = tarotService.searchCardsByName(name);
         mav.setStatus(HttpStatus.OK);
-        // sess.setAttribute("searchResults", searchResults);
         mav.addObject("searchResults", searchResults);
         mav.setViewName("search");
         return mav;
@@ -90,24 +88,12 @@ public class TarotController {
             sess.setAttribute("user", user);
             sess.setMaxInactiveInterval(60 * 60);
             model.addAttribute("username", user.getUsername());
-            return "redirect:/"; // Redirect to the home page or dashboard
+            return "redirect:/";
         } else {
             model.addAttribute("loginError", "Invalid username or password");
-            return "index"; // Redirect back to the login page with an error message
+            return "index";
         }
     }
-
-    // @GetMapping("/dashboard")
-    // public String dashboard(HttpSession sess, Model model) {
-    //     User user = (User) sess.getAttribute("user");
-    //     if (user != null) {
-    //         model.addAttribute("username", user.getUsername());
-    //         sess.setMaxInactiveInterval(60 * 60);
-    //         return "dashboard";
-    //     } else {
-    //         return "redirect:/login"; // Redirect to login if user is not found in session
-    //     }
-    // }
 
     @PostMapping("/signout")
     public String signOut(HttpSession session) {
@@ -119,40 +105,39 @@ public class TarotController {
     public ModelAndView getFavCard(HttpSession sess, RedirectAttributes redirectAttributes) throws IOException {
         ModelAndView mav = new ModelAndView();
         User user = (User) sess.getAttribute("user");
-        List<Tarot> cards = tarotService.getAllCards();
         if (user != null) {
             // User is logged in
-            mav.addObject("cards", cards);
+            List<Tarot> allCards = tarotService.getAllCards();
+            mav.addObject("cards", allCards);
             List<Tarot> userFavouriteCards = favCardsService.getFavoriteCardsService(user.getUsername());
             mav.addObject("username", user.getUsername());
-            mav.addObject("favouriteCard", userFavouriteCards);
+            mav.addObject("favouriteCards", userFavouriteCards);
         } else {
             // User is not logged in
             RedirectView redirectView = new RedirectView("/");
             redirectView.setExposeModelAttributes(false);
             mav.setView(redirectView);
-            // mav.addObject("alert", "Please log in to access this page.");
-            // or using RedirectAttributes
             redirectAttributes.addFlashAttribute("alert", "Please log in to access favourites.");
             return mav;
-            // mav.addObject("alert", "Please login to start favouriting cards");
-            // mav.setViewName("redirect:/");
-            // return mav;
         }
         mav.addObject("favouriteCard", new FavouriteCard());
-        mav.setViewName("favourite"); // Name of your Thymeleaf template
+        mav.setViewName("favourite");
         return mav;
     }
 
     @PostMapping("/favourite")
-    public ResponseEntity<?> postFavCard(@ModelAttribute FavouriteCard favouriteCard) throws IOException{
+    public ResponseEntity<?> postFavCard(@ModelAttribute FavouriteCard favouriteCard){
         try {
             favCardsService.addFavoriteCardService(favouriteCard.getUsername(), favouriteCard.getCardName());
             return ResponseEntity.ok("Card added to favorites");
+        } catch (IOException e) {
+            System.out.println("Error adding favorite card: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
-            // Log the exception details for debugging
-            // e.g., logger.error("Error adding favorite card: ", e);
-
+            System.out.println("Error adding favorite card: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error adding favorite card: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }

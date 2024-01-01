@@ -31,7 +31,11 @@ public class RedisRepo {
         template.opsForValue().set("favourites:" + username, favourites);
     }
 
+    public void setFavouriteCards(String username, List<Tarot> favourites) {
+        template.opsForValue().set("favourites:" + username, favourites);
+    }
+
     public List<Tarot> getFavouriteCards(String username) {
-        return (List<Tarot>) template.opsForValue().get("favorites:" + username);
+        return (List<Tarot>) template.opsForValue().get("favourites:" + username);
     }
 }

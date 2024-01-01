@@ -26,20 +26,25 @@ public class FavouriteCardsService {
             System.out.println(tarot);
             if (cardName.equals(tarot.getName())) {
                 card = tarot;
+                break;
             }
+        }
+
+        if (card == null) {
+            throw new RuntimeException("Card not found.");
         }
         // Check if the card is already a favorite
         List<Tarot> existingCards = redisRepo.getFavouriteCards(username);
 
         if (existingCards == null) {
             existingCards = new ArrayList<>();
-        }
-
-        if (existingCards.contains(card)) {
+        } else if (existingCards.contains(card)){
             throw new RuntimeException("Card is already in favorites.");
         }
+
+        existingCards.add(card);
         // Create and save the new favorite card
-        redisRepo.addFavouriteCard(username, card);
+        redisRepo.setFavouriteCards(username, existingCards);
     }
 
     public List<Tarot> getFavoriteCardsService(String username) {
